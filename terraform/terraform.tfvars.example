@@ -1,0 +1,5 @@
+# Copie para terraform.tfvars (que o .gitignore ignora) e ajuste. Nada aqui é segredo.
+regiao             = "us-east-1"
+github_organizacao = "HDAdeveloper"
+# 2ª aplicação (depois do deploy no Kubernetes): URL pública do OS Service
+# os_service_url = "http://xxxxxxxx.us-east-1.elb.amazonaws.com"
