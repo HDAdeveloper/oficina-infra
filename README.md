@@ -18,3 +18,8 @@ terraform apply
 
 **Custo:** cerca de US$ 0,35 por hora enquanto estiver no ar. Ao terminar: `terraform destroy`, aguarde `Destroy complete!`
 e confira com `terraform state list` (deve vir vazio). O estado e local e nao vai para o Git.
+
+## Documentação
+
+- [Documentação deste serviço](docs/servico.md): responsabilidade, API, mensagens, modelo e testes.
+- [Arquitetura](docs/arquitetura.md), [modelagem DDD](docs/ddd.md), [eventos e Saga](docs/eventos.md) e [decisões (ADRs)](docs/adr/).
