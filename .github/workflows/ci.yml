@@ -1,0 +1,36 @@
+name: CI — infra (Terraform)
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Valida o Terraform sem credenciais AWS e sem criar nada: formatação e consistência da configuração.
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: "1.9.8"
+
+      - name: Formatação (terraform fmt)
+        run: terraform fmt -check -recursive
+
+      - name: Init sem backend
+        run: terraform init -backend=false -input=false
+
+      - name: Validação (terraform validate)
+        run: terraform validate

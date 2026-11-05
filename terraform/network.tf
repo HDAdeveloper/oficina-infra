@@ -19,16 +19,16 @@ module "vpc" {
   public_subnets   = ["10.20.0.0/24", "10.20.1.0/24"]
   database_subnets = ["10.20.10.0/24", "10.20.11.0/24"]
 
-  enable_nat_gateway           = false
+  enable_nat_gateway                 = false
   create_database_subnet_group       = true
   create_database_subnet_route_table = true # tabela de rotas própria, sem saída para a internet
-  map_public_ip_on_launch      = true
-  enable_dns_hostnames         = true
-  enable_dns_support           = true
+  map_public_ip_on_launch            = true
+  enable_dns_hostnames               = true
+  enable_dns_support                 = true
 
   # Permite ao Kubernetes criar o balanceador público do OS Service nestas sub-redes
   public_subnet_tags = {
-    "kubernetes.io/role/elb"                        = "1"
+    "kubernetes.io/role/elb"                   = "1"
     "kubernetes.io/cluster/${var.projeto}-eks" = "shared"
   }
 }
