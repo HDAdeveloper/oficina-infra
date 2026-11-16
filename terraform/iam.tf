@@ -124,7 +124,12 @@ data "aws_iam_policy_document" "confianca_github" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_organizacao}/*:ref:refs/heads/main"] # só a branch main faz deploy
+      # Só a branch main faz deploy. O job de deploy usa o environment "producao"; nesse caso o GitHub troca o
+      # sub do token por "...:environment:producao", então esse formato também precisa ser aceito.
+      values = [
+        "repo:${var.github_organizacao}/*:ref:refs/heads/main",
+        "repo:${var.github_organizacao}/*:environment:producao",
+      ]
     }
   }
 }
