@@ -126,9 +126,13 @@ data "aws_iam_policy_document" "confianca_github" {
       variable = "token.actions.githubusercontent.com:sub"
       # Só a branch main faz deploy. O job de deploy usa o environment "producao"; nesse caso o GitHub troca o
       # sub do token por "...:environment:producao", então esse formato também precisa ser aceito.
+      # Repositórios novos do GitHub usam "subject imutável": o dono e o repositório levam o id numérico
+      # (repo:DONO@ID/repo@ID:...). Por isso cada regra aparece nos dois formatos, o clássico e o imutável.
       values = [
         "repo:${var.github_organizacao}/*:ref:refs/heads/main",
+        "repo:${var.github_organizacao}@*/*:ref:refs/heads/main",
         "repo:${var.github_organizacao}/*:environment:producao",
+        "repo:${var.github_organizacao}@*/*:environment:producao",
       ]
     }
   }
