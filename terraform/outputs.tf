@@ -60,3 +60,8 @@ output "url_da_api" {
   description = "Endereço público (API Gateway)."
   value       = aws_apigatewayv2_api.entrada.api_endpoint
 }
+
+output "url_webhook_mercadopago" {
+  description = "Cadastre esta URL como notification URL no Mercado Pago (vazia até informar billing_service_url)."
+  value       = var.billing_service_url != "" ? "${aws_apigatewayv2_api.entrada.api_endpoint}/webhooks/mercadopago" : ""
+}

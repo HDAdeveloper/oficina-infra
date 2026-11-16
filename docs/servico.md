@@ -18,7 +18,7 @@ Tudo o que o sistema precisa na AWS, como código (Terraform), mais a configura�
 | `lambda_gateway.tf` | Lambda `oficina-auth-cpf` e API Gateway HTTP |
 | `outputs.tf` | Endpoints, ARNs e segredos que o script de deploy usa |
 
-Entrada do API Gateway: `POST /auth/cpf` vai para a Lambda; as rotas do OS Service só são criadas quando `os_service_url` é informado (**apply em duas fases**).
+Entrada do API Gateway: `POST /auth/cpf` vai para a Lambda; as rotas do OS Service só são criadas quando `os_service_url` é informado, e a rota `POST /webhooks/mercadopago` (Billing) só quando `billing_service_url` é informado (**apply em duas fases**).
 
 ## Ambiente local (`local/`)
 
