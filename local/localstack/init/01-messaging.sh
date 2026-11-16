@@ -52,5 +52,9 @@ subscribe "$CMD_TOPIC" execution-commands '{"target":["execution"]}'
 # Eventos: Billing e Execution publicam; o OS Service (orquestrador) recebe todos
 subscribe "$EVT_TOPIC" os-events
 
+# E-mail: no SES (e no LocalStack) o remetente precisa estar verificado. Os e-mails enviados ficam em /_aws/ses.
+awslocal ses verify-email-identity --email-address oficina@oficina.local >/dev/null
+echo "[init] remetente de e-mail oficina@oficina.local verificado"
+
 touch /tmp/init-done   # sinaliza ao healthcheck do docker compose
 echo "[init] mensageria pronta"
