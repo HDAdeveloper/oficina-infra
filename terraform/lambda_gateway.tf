@@ -136,10 +136,12 @@ resource "aws_apigatewayv2_integration" "billing_webhook" {
   integration_uri    = "${var.billing_service_url}/webhooks/mercadopago"
 }
 
-resource "aws_apigatewayv2_route" "billing_webhook" {
+# Rota pública de propósito: o Mercado Pago não envia JWT. A proteção está no Billing (assinatura x-signature
+# HMAC-SHA256 + consulta do pagamento ao provedor antes de decidir). Revisado e aceito no Sonar (ADR-009).
+resource "aws_apigatewayv2_route" "billing_webhook" { # NOSONAR
   count = var.billing_service_url != "" ? 1 : 0
 
   api_id    = aws_apigatewayv2_api.entrada.id
-  route_key = "POST /webhooks/mercadopago"
+  route_key = "POST /webhooks/mercadopago" # NOSONAR
   target    = "integrations/${aws_apigatewayv2_integration.billing_webhook[0].id}"
 }
