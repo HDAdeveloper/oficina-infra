@@ -124,3 +124,22 @@ resource "aws_apigatewayv2_route" "os" {
   route_key = each.key
   target    = "integrations/${aws_apigatewayv2_integration.os[each.key].id}"
 }
+
+# Webhook do Mercado Pago (ADR-009): única rota pública do Billing. O webhook é só um gatilho; o Billing
+# consulta o pagamento no Mercado Pago antes de decidir, e valida a assinatura (x-signature) quando configurada.
+resource "aws_apigatewayv2_integration" "billing_webhook" {
+  count = var.billing_service_url != "" ? 1 : 0
+
+  api_id             = aws_apigatewayv2_api.entrada.id
+  integration_type   = "HTTP_PROXY"
+  integration_method = "POST"
+  integration_uri    = "${var.billing_service_url}/webhooks/mercadopago"
+}
+
+resource "aws_apigatewayv2_route" "billing_webhook" {
+  count = var.billing_service_url != "" ? 1 : 0
+
+  api_id    = aws_apigatewayv2_api.entrada.id
+  route_key = "POST /webhooks/mercadopago"
+  target    = "integrations/${aws_apigatewayv2_integration.billing_webhook[0].id}"
+}

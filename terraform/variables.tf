@@ -49,6 +49,16 @@ variable "os_service_url" {
   default     = ""
 }
 
+variable "billing_service_url" {
+  description = <<-EOT
+    URL pública do Billing Service (balanceador billing-service-publico, ex.: http://def456.us-east-1.elb.amazonaws.com).
+    Só é usada para a rota POST /webhooks/mercadopago do API Gateway (webhook do Mercado Pago, ADR-009).
+    Vazia = a rota não é criada (o pagamento fica no modo simulado).
+  EOT
+  type        = string
+  default     = ""
+}
+
 variable "jar_lambda" {
   description = "Caminho do JAR da Lambda (gerado por ./mvnw verify em auth-lambda)."
   type        = string
